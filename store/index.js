@@ -15,7 +15,7 @@ const Store = () => {
     },
     actions: {
       setOrganizationsRef: firestoreAction(({ bindFirestoreRef }, ref) => {
-        bindFirestoreRef('organizations', ref.orderBy('timestamp', 'desc'))
+        bindFirestoreRef('organizations', ref)
       })
     },
     getters: {

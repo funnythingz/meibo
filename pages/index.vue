@@ -9,6 +9,9 @@
 </template>
 
 <script>
+import { db } from '~/plugins/firestore.js'
+import { mapGetters, mapState } from 'vuex'
+
 export default {
 
   data() {
@@ -22,7 +25,8 @@ export default {
   },
 
   computed: {
-    ...mapGetters({ organizations: 'getOrganizations' })
+    ...mapGetters({ organizations: 'getOrganizations' }),
+    ...mapState(['currentUser'])
   },
 }
 </script>

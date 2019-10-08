@@ -1,8 +1,15 @@
-import admin from "firebase-admin"
+import firebase from 'firebase/app'
 
-import serviceAccount from "../meibo-8e247-firebase-adminsdk-eo8py-5a62552509.json"
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://meibo-8e247.firebaseio.com"
-});
+if (!firebase.apps.length) {
+  firebase.initializeApp(
+    {
+      apiKey: process.env.APIKEY,
+      authDomain: process.env.AUTHDOMAIN,
+      databaseURL: process.env.DATABASEURL,
+      projectId: process.env.PROJECTID,
+      storageBucket: process.env.STORAGEBUCKET,
+      messagingSenderId: process.env.MESSAGINGSENDERID
+    }
+  )
+}
+export default firebase
