@@ -11,6 +11,7 @@
 <script>
 import { db } from '~/plugins/firestore.js'
 import { mapGetters, mapState } from 'vuex'
+import isEmpty from 'lodash/isEmpty'
 
 export default {
 
@@ -21,6 +22,9 @@ export default {
   },
 
   created() {
+    if (!this.isLogin()) {
+      this.$router.push({path: '/login'})
+    }
     this.$store.dispatch('setOrganizationsRef', db.collection('organizations'))
   },
 
@@ -28,6 +32,12 @@ export default {
     ...mapGetters({ organizations: 'getOrganizations' }),
     ...mapState(['currentUser'])
   },
+
+  methods: {
+    isLogin() {
+      return !isEmpty(this.currentUser)
+    }
+  }
 }
 </script>
 
