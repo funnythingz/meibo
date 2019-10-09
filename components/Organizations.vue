@@ -6,27 +6,16 @@ ul
 
 <script>
 import { db } from '~/plugins/firestore.js'
-import { mapGetters, mapState } from 'vuex'
-import isEmpty from 'lodash/isEmpty'
+import { mapGetters } from 'vuex'
 
 export default {
 
   created() {
-    if (!this.isLogin()) {
-      this.$router.push({path: '/login'})
-    }
     this.$store.dispatch('setOrganizationsRef', db.collection('organizations'))
   },
 
   computed: {
     ...mapGetters({ organizations: 'getOrganizations' }),
-    ...mapState(['currentUser'])
-  },
-
-  methods: {
-    isLogin() {
-      return !isEmpty(this.currentUser)
-    }
   }
 }
 </script>
