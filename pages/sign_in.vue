@@ -2,24 +2,24 @@
 .container
   .field
     h1
-      | login
+      | sign_in
   .field(v-if="hasError()")
     p.notification.is-danger
       | {{error.message}}
   .field
     .control
-      input.input(type="email" placeholder="Email" v-model="email")
+      input.input(type="email" placeholder="Email" v-model="email" required)
   .field
     .control
-      input.input(type="password" placeholder="Password" v-model="password")
+      input.input(type="password" placeholder="Password" v-model="password" required)
   .field
     .control
-      button.button(@click="login()")
-        | login
+      button.button(@click="signIn()")
+        | sign in
   .field
     p
-      nuxt-link(to="/sign_in")
-        | 新規アカウント作成はこちら
+      nuxt-link(to="/login")
+        | loginはこちら
 </template>
 
 <script>
@@ -46,9 +46,9 @@ export default {
   },
 
   methods: {
-    async login() {
+    async signIn() {
       try {
-        await firebase.auth().signInWithEmailAndPassword(this.email, this.password)
+        await firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
         this.$router.push({path: '/'})
       } catch(error) {
         console.log(error)
@@ -58,6 +58,14 @@ export default {
 
     hasError() {
       return !isEmpty(this.error)
+    },
+
+    isLogin() {
+      return !isEmpty(this.currentUser)
+    },
+
+    isLogout() {
+      return isEmpty(this.currentUser)
     }
 
   }
