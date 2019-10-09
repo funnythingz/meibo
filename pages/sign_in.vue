@@ -41,7 +41,9 @@ export default {
   created() {
     firebase.auth().onAuthStateChanged((currentUser) => {
       this.$store.commit('setCurrentUser', currentUser)
-      this.$router.push({path: '/'})
+      if (this.isLogin()) {
+        this.$router.push({path: '/'})
+      }
     })
   },
 
@@ -62,10 +64,6 @@ export default {
 
     isLogin() {
       return !isEmpty(this.currentUser)
-    },
-
-    isLogout() {
-      return isEmpty(this.currentUser)
     }
 
   }
