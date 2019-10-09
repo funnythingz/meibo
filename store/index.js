@@ -1,6 +1,8 @@
 import Vuex from 'vuex'
 import { vuexfireMutations, firestoreAction } from 'vuexfire'
 
+export const strict = false
+
 export const state = () => ({
     currentUser: {},
     organizations: []
