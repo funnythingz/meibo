@@ -11,7 +11,7 @@ import { mapGetters } from 'vuex'
 export default {
 
   created() {
-    this.$store.dispatch('setOrganizationsRef', db.collection('organizations'))
+    this.$store.dispatch('setOrganizationsRef', db.collection('organizations').orderBy('name', 'asc'))
   },
 
   computed: {

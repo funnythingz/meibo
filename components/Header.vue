@@ -1,7 +1,13 @@
 <template lang="pug">
   header
     .field(v-if="isLogin()")
-      | {{currentUser.email}}
+      ul
+        li
+          a(@click.stop="toMypage()")
+            | プロフィールを見る
+        li
+          a(href="/logout")
+            | logout
     .field(v-else)
       | 未ログインだよ
 </template>
@@ -33,6 +39,10 @@ export default {
 
     isLogout() {
       return isEmpty(this.currentUser)
+    },
+
+    toMypage() {
+      this.$router.push({path: `/users/${this.currentUser.uid}`})
     }
 
   }

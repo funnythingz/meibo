@@ -1,15 +1,23 @@
 <template lang="pug">
 .container
-  dl
-    dt
-      | 名前
-    dd
-      | {{user.last_name}} {{user.first_name}}
-  dl
-    dt
-      | 生年月日
-    dd
-      | {{user.birth_month}}/{{user.birth_day}}/{{user.birth_year}}
+  h1
+    | ユーザープロフィール
+  .field(v-if="hasUserProfile()")
+    dl
+      dt
+        | Account
+      dd
+        | {{currentUser.email}}
+    dl
+      dt
+        | 名前
+      dd
+        | {{currentUserProfile.last_name}} {{currentUserProfile.first_name}}
+    dl
+      dt
+        | 生年月日
+      dd
+        | {{currentUserProfile.birth_month}}/{{currentUserProfile.birth_day}}/{{currentUserProfile.birth_year}}
 </template>
 
 <script>
@@ -20,9 +28,9 @@ import { isEmpty } from 'lodash/lodash'
 export default {
 
   async created() {
-    const doc = await db.collection('users').doc(this.$route.params.id).get()
-    if (this.isLogin() && !isEmpty(doc.data())) {
-      this.user = doc.data()
+    const userProfileRef = await db.collection('users').doc(this.$route.params.id).get()
+    if (this.isLogin() && !isEmpty(userProfileRef.data())) {
+      this.$store.commit('setCurrentUserProfile', userProfileRef.data())
       return
     }
     this.$router.push({path: '/'})
@@ -36,12 +44,15 @@ export default {
   },
 
   computed: {
-    ...mapState(['currentUser'])
+    ...mapState(['currentUser', 'currentUserProfile'])
   },
 
   methods: {
     isLogin() {
       return !isEmpty(this.currentUser)
+    },
+    hasUserProfile() {
+      return !isEmpty(this.currentUserProfile)
     }
   }
 }
