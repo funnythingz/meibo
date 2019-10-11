@@ -70,13 +70,15 @@
 import firebase from 'firebase'
 import { db } from '~/plugins/firestore.js'
 import ProfileHelper from '~/mixins/ProfileHelper.js'
+import Organizations from '~/mixins/Organizations'
 import isEmpty from 'lodash/isEmpty'
 import { mapState } from 'vuex'
 
 export default {
 
   mixins:[
-    ProfileHelper
+    ProfileHelper,
+    Organizations
   ],
 
   data() {
@@ -102,7 +104,10 @@ export default {
 
   computed: mapState(['currentUser']),
 
-  created() {
+  async created() {
+    //TODO: 組織名一覧を取得する
+    const organizations = await db.collection('organizations').get()
+    console.log(organizations.docs[0].data())
     firebase.auth().onAuthStateChanged((currentUser) => {
       this.$store.commit('setCurrentUser', currentUser)
       if (this.isLogin()) {
@@ -119,7 +124,7 @@ export default {
           this.$store.commit('setCurrentUser', currentUser)
           this.commitUserProfile(currentUser)
           if (this.isLogin()) {
-            this.$router.push({path: '/'})
+            this.$router.push({path: `/users/${this.currentUser.uid}`})
           }
         })
       } catch(error) {
