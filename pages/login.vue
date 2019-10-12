@@ -54,7 +54,6 @@ export default {
     async login() {
       try {
         await firebase.auth().signInWithEmailAndPassword(this.email, this.password)
-        this.$router.push({path: '/'})
       } catch(error) {
         console.log(error)
         this.error = error

@@ -6,6 +6,7 @@ export const strict = false
 export const state = () => ({
     currentUser: {},
     currentUserProfile: {},
+    currentUserOrganization: {},
     organizations: []
 })
 
@@ -16,6 +17,9 @@ export const mutations = {
     },
     setCurrentUserProfile(state, userProfile) {
         state.currentUserProfile = userProfile
+    },
+    setCurrentUserOrganization(state, organization) {
+        state.currentUserOrganization = organization
     }
 }
 
@@ -31,6 +35,9 @@ export const getters = {
     },
     getCurrentUserProfile: (state) => {
         return state.currentUserProfile
+    },
+    getCurrentUserOrganization: (state) => {
+        return state.currentUserOrganization
     },
     getOrganizations: (state) => {
         return state.organizations

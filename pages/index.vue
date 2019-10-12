@@ -6,15 +6,17 @@
 </template>
 
 <script>
-import BeforeLogin from '~/mixins/BeforeLogin'
 import Organizations from '~/components/Organizations'
 import { mapState } from 'vuex'
+import isEmpty from 'lodash/isEmpty'
 
 export default {
 
-  mixins: [
-    BeforeLogin
-  ],
+  async created() {
+    if (await isEmpty(this.currentUser)) {
+      this.$router.push({path: '/login'})
+    }
+  },
 
   components: {
     Organizations

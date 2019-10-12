@@ -18,6 +18,12 @@
         | 生年月日
       dd
         | {{currentUserProfile.birth_month}}/{{currentUserProfile.birth_day}}/{{currentUserProfile.birth_year}}
+    dl
+      dt
+        | 所属組織
+      dd
+        a(@click.prevent="toOrganization()")
+          | {{currentUserOrganization.name}}
 </template>
 
 <script>
@@ -40,7 +46,7 @@ export default {
   },
 
   computed: {
-    ...mapState(['currentUser', 'currentUserProfile'])
+    ...mapState(['currentUser', 'currentUserProfile', 'currentUserOrganization'])
   },
 
   methods: {
@@ -55,7 +61,19 @@ export default {
       const userProfileRef = await db.collection('users').doc(currentUser.uid).get()
       if (!isEmpty(userProfileRef.data())) {
         this.$store.commit('setCurrentUserProfile', userProfileRef.data())
+        this.userOrganizationData(this.currentUserProfile.organization_id)
       }
+    },
+
+    async userOrganizationData(organizationId) {
+      const organizationRef = await db.collection('organizations').doc(organizationId).get()
+      if (!isEmpty(organizationRef.data())) {
+        this.$store.commit('setCurrentUserOrganization', organizationRef.data())
+      }
+    },
+
+    toOrganization() {
+      this.$router.push({path: `/organizations/${this.currentUserProfile.organization_id}`})
     }
   }
 }

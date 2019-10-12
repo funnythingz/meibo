@@ -2,22 +2,23 @@
 .container
   h1
     | ユーザープロフィール
-  .field(v-if="hasUserProfile()")
-    dl
-      dt
-        | Account
-      dd
-        | {{currentUser.email}}
+  .field
     dl
       dt
         | 名前
       dd
-        | {{currentUserProfile.last_name}} {{currentUserProfile.first_name}}
+        | {{userProfile.last_name}} {{userProfile.first_name}}
     dl
       dt
         | 生年月日
       dd
-        | {{currentUserProfile.birth_month}}/{{currentUserProfile.birth_day}}/{{currentUserProfile.birth_year}}
+        | {{userProfile.birth_month}}/{{userProfile.birth_day}}/{{userProfile.birth_year}}
+    dl
+      dt
+        | 所属組織
+      dd
+        a(@click.prevent="toOrganization()")
+          | {{userOrganization.name}}
 </template>
 
 <script>
@@ -30,7 +31,8 @@ export default {
   async created() {
     const userProfileRef = await db.collection('users').doc(this.$route.params.id).get()
     if (this.isLogin() && !isEmpty(userProfileRef.data())) {
-      this.$store.commit('setCurrentUserProfile', userProfileRef.data())
+      this.userProfile = userProfileRef.data()
+      this.userOrganizationData(this.userProfile.organization_id)
       return
     }
     this.$router.push({path: '/'})
@@ -39,20 +41,29 @@ export default {
 
   data() {
     return {
-      user: {}
+      userProfile: {},
+      userOrganization: {}
     }
   },
 
   computed: {
-    ...mapState(['currentUser', 'currentUserProfile'])
+    ...mapState(['currentUser'])
   },
 
   methods: {
     isLogin() {
       return !isEmpty(this.currentUser)
     },
-    hasUserProfile() {
-      return !isEmpty(this.currentUserProfile)
+
+    async userOrganizationData(organizationId) {
+      const organizationRef = await db.collection('organizations').doc(organizationId).get()
+      if (!isEmpty(organizationRef.data())) {
+        this.userOrganization = organizationRef.data()
+      }
+    },
+
+    toOrganization() {
+      this.$router.push({path: `/organizations/${this.userProfile.organization_id}`})
     }
   }
 }
