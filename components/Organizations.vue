@@ -1,7 +1,8 @@
 <template lang="pug">
 ul
   li(v-for="org in organizations")
-    | {{org.name}}
+    a(@click.prevent="toOrganization(org.id)")
+      | {{org.name}}
 </template>
 
 <script>
@@ -16,6 +17,12 @@ export default {
 
   computed: {
     ...mapGetters({ organizations: 'getOrganizations' }),
+  },
+
+  methods: {
+    toOrganization(organizationId) {
+      this.$router.push({path: `/organizations/${organizationId}`})
+    }
   }
 }
 </script>

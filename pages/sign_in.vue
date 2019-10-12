@@ -70,7 +70,6 @@
 import firebase from 'firebase'
 import { db } from '~/plugins/firestore.js'
 import ProfileHelper from '~/mixins/ProfileHelper.js'
-import Organizations from '~/mixins/Organizations'
 import isEmpty from 'lodash/isEmpty'
 import { mapState } from 'vuex'
 
@@ -79,8 +78,7 @@ export default {
   layout: 'plain',
 
   mixins:[
-    ProfileHelper,
-    Organizations
+    ProfileHelper
   ],
 
   data() {
