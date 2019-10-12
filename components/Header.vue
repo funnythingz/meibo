@@ -3,7 +3,7 @@
     .field(v-if="isLogin()")
       ul
         li
-          a(@click.stop="toMypage()")
+          a(@click.stop="toMe()")
             | プロフィールを見る
         li
           a(href="/logout")
@@ -41,8 +41,8 @@ export default {
       return isEmpty(this.currentUser)
     },
 
-    toMypage() {
-      this.$router.push({path: `/users/${this.currentUser.uid}`})
+    toMe() {
+      this.$router.push({path: `/me`})
     }
 
   }
