@@ -3,6 +3,9 @@
     .field(v-if="isLogin()")
       ul
         li
+          a(@click.stop="toRoot()")
+            | Home
+        li
           a(@click.stop="toMe()")
             | プロフィールを見る
         li
@@ -43,6 +46,10 @@ export default {
 
     toMe() {
       this.$router.push({path: `/me`})
+    },
+
+    toRoot() {
+      this.$router.push({path: `/`})
     }
 
   }

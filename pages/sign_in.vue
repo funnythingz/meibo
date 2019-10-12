@@ -57,6 +57,16 @@
               option(v-for="option in input.birth_years.options" v-bind:value="option")
                 | {{ option }}
   .field
+    .columns
+      .column
+        .field
+          .control
+            label(for="input_organization")
+              | 所属組織
+            select#input_organization(v-model="input.organizations.selected")
+              option(v-for="organization in organizations" :value="organization.id")
+                | {{ organization.name }}
+  .field
     .control
       button.button(@click="signIn()")
         | sign in
@@ -71,7 +81,7 @@ import firebase from 'firebase'
 import { db } from '~/plugins/firestore.js'
 import ProfileHelper from '~/mixins/ProfileHelper.js'
 import isEmpty from 'lodash/isEmpty'
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
 
@@ -96,18 +106,22 @@ export default {
         birth_years: {
           selected: 1999,
           options: this.yearCollection()
+        },
+        organizations: {
+          selected: ''
         }
       },
       error: ''
     }
   },
 
-  computed: mapState(['currentUser']),
+  computed: {
+    ...mapState(['currentUser']),
+    ...mapGetters({ organizations: 'getOrganizations' })
+  },
 
-  async created() {
-    //TODO: 組織名一覧を取得する
-    const organizations = await db.collection('organizations').get()
-    console.log(organizations.docs[0].data())
+  created() {
+    this.$store.dispatch('setOrganizationsRef', db.collection('organizations').orderBy('name', 'asc'))
     firebase.auth().onAuthStateChanged((currentUser) => {
       this.$store.commit('setCurrentUser', currentUser)
       if (this.isLogin()) {
@@ -124,7 +138,7 @@ export default {
           this.$store.commit('setCurrentUser', currentUser)
           this.commitUserProfile(currentUser)
           if (this.isLogin()) {
-            this.$router.push({path: `/users/${this.currentUser.uid}`})
+            this.$router.push({path: `/me`})
           }
         })
       } catch(error) {
@@ -139,7 +153,8 @@ export default {
         last_name: this.input.profile.lastname,
         birth_month: this.input.birth_months.selected,
         birth_day: this.input.birth_days.selected,
-        birth_year: this.input.birth_years.selected
+        birth_year: this.input.birth_years.selected,
+        organization_id: this.input.organizations.selected
       })
       this.$store.commit('setCurrentUserProfile', userProfileRef)
     },
