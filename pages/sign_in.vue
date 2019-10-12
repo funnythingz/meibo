@@ -31,41 +31,38 @@
               | 名
             input.input#input_firstname(type="input" placeholder="氏" v-model="input.profile.firstname" required)
   .field
+    | 生年月日
     .columns
       .column
-        .field
-          .control
-            label(for="input_birth_month")
-              | 生年月日 month
-            select#input_birth_month(v-model="input.birth_months.selected")
-              option(v-for="option in input.birth_months.options" v-bind:value="option")
-                | {{ option }}
+        label(for="input_birth_month")
+          | month
+        .select
+          select#input_birth_month(v-model="input.birth_months.selected")
+            option(v-for="option in input.birth_months.options" v-bind:value="option")
+              | {{ option }}
       .column
-        .field
-          .control
-            label(for="input_birth_day")
-              | 生年月日 day
-            select#input_birth_day(v-model="input.birth_days.selected")
-              option(v-for="option in input.birth_days.options" v-bind:value="option")
-                | {{ option }}
+        label(for="input_birth_day")
+          | day
+        .select
+          select#input_birth_day(v-model="input.birth_days.selected")
+            option(v-for="option in input.birth_days.options" v-bind:value="option")
+              | {{ option }}
       .column
-        .field
-          .control
-            label(for="input_birth_year")
-              | 生年月日 year
-            select#input_birth_year(v-model="input.birth_years.selected")
-              option(v-for="option in input.birth_years.options" v-bind:value="option")
-                | {{ option }}
+        label(for="input_birth_year")
+          | year
+        .select
+          select#input_birth_year(v-model="input.birth_years.selected")
+            option(v-for="option in input.birth_years.options" v-bind:value="option")
+              | {{ option }}
   .field
     .columns
       .column
-        .field
-          .control
-            label(for="input_organization")
-              | 所属組織
-            select#input_organization(v-model="input.organizations.selected")
-              option(v-for="organization in organizations" :value="organization.id")
-                | {{ organization.name }}
+        label(for="input_organization")
+          | 所属組織
+        .select
+          select#input_organization(v-model="input.organizations.selected")
+            option(v-for="organization in organizations" :value="organization.id")
+              | {{ organization.name }}
   .field
     .control
       button.button(@click="signIn()")
