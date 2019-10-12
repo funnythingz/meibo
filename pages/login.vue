@@ -28,6 +28,9 @@ import isEmpty from 'lodash/isEmpty'
 import { mapState } from 'vuex'
 
 export default {
+
+  layout: 'plain',
+
   data() {
     return {
       email: '',

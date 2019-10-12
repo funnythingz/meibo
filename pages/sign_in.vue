@@ -76,6 +76,8 @@ import { mapState } from 'vuex'
 
 export default {
 
+  layout: 'plain',
+
   mixins:[
     ProfileHelper,
     Organizations

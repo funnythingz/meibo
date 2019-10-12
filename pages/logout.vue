@@ -5,6 +5,9 @@
 import firebase from 'firebase'
 
 export default {
+
+  layout: 'plain',
+
   mounted() {
     this.signOut()
   },
